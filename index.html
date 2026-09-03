@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Fruit Slash</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <div id="menu" class="screen active menu-screen">
+    <div class="menu-photo" aria-hidden="true"></div>
+    <div class="menu-orbs" aria-hidden="true">
+      <span>🍎</span><span>🍓</span><span>🍉</span><span>🍍</span><span>🍊</span><span>🥝</span><span>🍑</span><span>🍇</span><span>🥭</span><span>🫐</span><span>🍒</span><span>🍐</span>
+    </div>
+    <div class="menu-sparkles" aria-hidden="true"></div>
+    <h1>FRUIT <span>SLASH</span></h1>
+    <p class="subtitle">Chém thật nhanh — né thật chuẩn!</p>
+    <div class="outside-score">⭐ ĐIỂM CỦA BẠN: <b id="outsideScore">0</b></div>
+    <div class="menu-buttons">
+      <button onclick="showStage()">▶ BẮT ĐẦU</button>
+      <button onclick="showSkins()">🔪 CHỌN SKIN</button>
+      <button onclick="showSettings()">⚙ SETTING</button>
+      <button onclick="showHelp()">📖 HƯỚNG DẪN</button>
+      <button onclick="showAbout()">ℹ GIỚI THIỆU</button>
+    </div>
+  </div>
+
+  <div id="stage" class="screen">
+    <button class="back" onclick="showMenu()">← MENU</button>
+    <h2>CHỌN MÀN CHƠI</h2>
+    <div class="cards">
+      <div class="card" onclick="chooseMode('fruit')"><div class="big">🍎🍉🍊</div><h3>MÀN 1</h3><p>CHÉM TRÁI CÂY</p></div>
+      <div class="card" onclick="chooseMode('veg')"><div class="big">🥕🥦🍅</div><h3>MÀN 2</h3><p>CHÉM RAU CỦ</p></div>
+    </div>
+  </div>
+
+  <div id="difficulty" class="screen">
+    <button class="back" onclick="showStage()">← QUAY LẠI</button>
+    <h2 id="modeTitle">CHỌN ĐỘ KHÓ</h2>
+    <div class="difficulty-buttons">
+      <button onclick="startGame(0)">🟢 DỄ <small>5 mạng · ít boom</small></button>
+      <button onclick="startGame(1)">🟡 TRUNG BÌNH <small>4 mạng · nhiều boom hơn</small></button>
+      <button onclick="startGame(2)">🔴 KHÓ <small>3 mạng · rất nhanh</small></button>
+    </div>
+  </div>
+
+  <div id="skins" class="screen">
+    <button class="back" onclick="showMenu()">← MENU</button>
+    <h2>🔪 CHỌN SKIN DAO</h2>
+    <div class="skin-topbar">⭐ Điểm: <b id="skinScore">0</b><button class="lucky-open" onclick="openLuckyWheel()">🎰 VÒNG QUAY MAY MẮN · 100 ĐIỂM</button></div>
+    <div id="skinList" class="skin-list"></div>
+  </div>
+
+  <div id="luckyWheel" class="lucky-modal">
+    <div class="lucky-panel">
+      <button class="lucky-close" onclick="closeLuckyWheel()">✕</button>
+      <div class="lucky-title">🎰 VÒNG QUAY MAY MẮN</div>
+      <p>Trả <b>100 điểm</b> để quay. Kết quả sẽ dừng ngay tại ô giữa.</p>
+      <div class="roulette-wrap"><div class="roulette-pointer">▼</div><div class="roulette-window"><div id="rouletteTrack" class="roulette-track"></div></div><div class="roulette-center-line"></div></div>
+      <div id="luckyResult" class="lucky-result">🎁 Có thể nhận skin mới, +50 điểm hoặc “Chúc bạn may mắn lần sau”</div>
+      <button id="spinButton" class="spin-button" onclick="spinLuckyWheel()">🎰 QUAY · 100 ĐIỂM</button>
+      <div class="lucky-points">⭐ Điểm hiện tại: <b id="luckyScore">0</b></div>
+    </div>
+  </div>
+
+  <div id="settings" class="screen">
+    <button class="back" onclick="showMenu()">← MENU</button>
+    <h2>⚙ SETTING</h2>
+    <div class="settings-box">
+      <label>🎵 Nhạc nền <input id="musicToggle" type="checkbox" checked></label>
+      <label>🔊 Hiệu ứng <input id="sfxToggle" type="checkbox" checked></label>
+      <label>Âm lượng <input id="volume" type="range" min="0" max="1" step=".01" value=".7"></label>
+    </div>
+  </div>
+
+  <div id="help" class="screen">
+    <button class="back" onclick="showMenu()">← MENU</button>
+    <h2>📖 HƯỚNG DẪN</h2>
+    <div class="info">
+      <p>🖱️ Kéo chuột hoặc chạm màn hình để tạo đường chém.</p>
+      <p>🍎 Chém trái cây / rau củ: <b>+1 điểm</b></p>
+      <p>✨ Trái đặc biệt: <b>+10 điểm</b></p>
+      <p>💣 Chém Boom: <b>-1 mạng</b></p>
+      <p>❤️ Hết mạng sẽ Game Over.</p>
+      <p>⚙️ Trong game có nút setting góc trên phải. Khi chơi, chuột sẽ ẩn và chỉ hiện lại khi đưa vào nút setting.</p>
+    </div>
+  </div>
+
+  <div id="about" class="screen">
+    <button class="back" onclick="showMenu()">← MENU</button>
+    <h2>ℹ GIỚI THIỆU</h2>
+    <div class="info"><h3>FRUIT SLASH</h3><p>Game chém trái cây/rau củ lấy cảm hứng từ dòng game chém hoa quả.</p><p>Người chơi cần phản xạ nhanh để ghi điểm và tránh những quả Boom.</p></div>
+  </div>
+
+  <div id="game" class="screen">
+    <div class="outer-photo" aria-hidden="true"></div>
+    <div class="game-decor" aria-hidden="true">
+      <span>🍉</span><span>🍓</span><span>🍍</span><span>🍊</span><span>🍎</span><span>🥝</span><span>🍒</span><span>🥭</span><span>🍇</span><span>🍑</span><span>🍋</span><span>🫐</span><span>🍈</span><span>🍏</span>
+    </div>
+    <div class="game-frame">
+    <canvas id="gameCanvas"></canvas>
+    <div class="hud">
+      <div>⭐ <span id="score">0</span></div>
+      <div class="played-time">⏱ <span id="playedTime">0</span> giây</div>
+      <div id="lives">❤️❤️❤️❤️❤️</div>
+      <button onclick="togglePause()">⚙</button>
+    </div>
+    <div id="countdown">3</div>
+    <div id="pausePanel" class="overlay">
+      <div class="panel"><h2>⏸ TẠM DỪNG</h2><label>🎵 Nhạc <input id="gameMusic" type="checkbox" checked></label><label>🔊 SFX <input id="gameSfx" type="checkbox" checked></label><button onclick="togglePause()">▶ TIẾP TỤC</button><button onclick="showMenu()">🏠 MENU</button></div>
+    </div>
+    <div id="gameOver" class="overlay">
+      <div class="panel"><h2>💥 GAME OVER</h2><p>Điểm: <b id="finalScore">0</b></p><p>⏱ Đã chơi: <b id="finalTime">0</b> giây</p><button onclick="restartGame()">🔄 CHƠI LẠI</button><button onclick="showMenu()">🏠 VỀ MENU</button></div>
+    </div>
+    </div>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
